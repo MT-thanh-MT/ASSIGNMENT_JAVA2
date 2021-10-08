@@ -1,15 +1,52 @@
 package Employee_form;
 
+import Model.Employee;
+import Model.Employee_list;
+import java.awt.Color;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author XUÂN THÀNH
  */
 public class EmployeeManagement_form extends javax.swing.JFrame {
 
+    private Employee_list list;
+    private String path = "E:\\hoctap\\JAVA2\\ASSIGNMENT_JAVA2\\Assignment_thanhmxph18759\\List_Employee.txt";
+
     public EmployeeManagement_form() {
         initComponents();
 
         setLocationRelativeTo(null);
+        this.list = new Employee_list();
+        
+        
+    }
+
+    private void fillTable() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblQLNV.getModel();
+
+        dtm.setRowCount(0);
+
+        ArrayList<Employee> ds = this.list.getList();
+        for (int i = 0; i < ds.size(); i++) {
+            Employee nv = (Employee) ds.get(i);
+
+            Object[] rowData = new Object[]{
+                nv.getManv(),
+                nv.getHoTen(),
+                nv.getTuoi(),
+                nv.getEmail(),
+                nv.getLuong()
+            };
+
+            dtm.addRow(rowData);
+        }
     }
 
     /**
@@ -55,10 +92,10 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         lblErrorMANV = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblQLNV = new javax.swing.JTable();
-        btnPreList = new javax.swing.JButton();
+        btnFirst = new javax.swing.JButton();
         btnPre = new javax.swing.JButton();
         btnNext = new javax.swing.JButton();
-        btnNextList = new javax.swing.JButton();
+        btnLast = new javax.swing.JButton();
         lblRecord = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
@@ -120,14 +157,39 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         });
 
         btnSave.setText("SAVE");
+        btnSave.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnSaveActionPerformed(evt);
+            }
+        });
 
         btnDelete.setText(" DELETE");
+        btnDelete.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnDeleteActionPerformed(evt);
+            }
+        });
 
         btnFind.setText("FIND");
+        btnFind.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFindActionPerformed(evt);
+            }
+        });
 
         btnOpen.setText("OPEN");
+        btnOpen.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnOpenActionPerformed(evt);
+            }
+        });
 
         btnExit.setText("EXIT");
+        btnExit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnExitActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -215,22 +277,47 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                 return canEdit [columnIndex];
             }
         });
+        tblQLNV.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                tblQLNVMouseClicked(evt);
+            }
+        });
         jScrollPane2.setViewportView(tblQLNV);
 
-        btnPreList.setFont(new java.awt.Font("Algerian", 1, 11)); // NOI18N
-        btnPreList.setText("|<");
+        btnFirst.setFont(new java.awt.Font("Algerian", 1, 11)); // NOI18N
+        btnFirst.setText("|<");
+        btnFirst.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnFirstActionPerformed(evt);
+            }
+        });
 
         btnPre.setFont(new java.awt.Font("Algerian", 1, 11)); // NOI18N
         btnPre.setText("<<");
+        btnPre.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnPreActionPerformed(evt);
+            }
+        });
 
         btnNext.setFont(new java.awt.Font("Algerian", 1, 11)); // NOI18N
         btnNext.setText(">>");
+        btnNext.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNextActionPerformed(evt);
+            }
+        });
 
-        btnNextList.setFont(new java.awt.Font("Algerian", 1, 11)); // NOI18N
-        btnNextList.setText(">|");
+        btnLast.setFont(new java.awt.Font("Algerian", 1, 11)); // NOI18N
+        btnLast.setText(">|");
+        btnLast.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnLastActionPerformed(evt);
+            }
+        });
 
         lblRecord.setForeground(new java.awt.Color(255, 51, 51));
-        lblRecord.setText("Record: 1 of 10");
+        lblRecord.setText("Record: 0 of 0");
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -277,13 +364,13 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                                 .addGap(35, 35, 35)
                                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                                     .addGroup(jPanel1Layout.createSequentialGroup()
-                                        .addComponent(btnPreList)
+                                        .addComponent(btnFirst)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnPre, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
                                         .addComponent(btnNext, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addGap(18, 18, 18)
-                                        .addComponent(btnNextList)
+                                        .addComponent(btnLast)
                                         .addGap(26, 26, 26)
                                         .addComponent(lblRecord, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                                     .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
@@ -353,10 +440,10 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnPreList)
+                    .addComponent(btnFirst)
                     .addComponent(btnPre)
                     .addComponent(btnNext)
-                    .addComponent(btnNextList)
+                    .addComponent(btnLast)
                     .addComponent(lblRecord))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -416,9 +503,9 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                         return canEdit[columnIndex];
                     }
                 });
-                
+
                 break;
-                
+
             case 1:
                 this.lblQLNV.setText("STAFF MANAGEMENT");
                 this.lblMANV.setText("STAFF ID");
@@ -453,13 +540,137 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                 break;
 
         }
+        fillTable();
     }//GEN-LAST:event_cbbLangugeActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void tblQLNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNVMouseClicked
+        list.setCurrentIndex(this.tblQLNV.getSelectedRow());
+        if (list.getCurrentEmployeeIndex() == -1) {
+            return;
+        }
+        fillForm(list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_tblQLNVMouseClicked
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
         if (checkForm() == false) {
             return;
         }
-    }//GEN-LAST:event_btnNewActionPerformed
+        
+        if (list.getCurrentEmployeeIndex() == -1) {
+            this.list.Add(getDanhSach());
+            
+        } else {
+            this.list.Update(list.getCurrentEmployeeIndex(), getDanhSach());
+        }
+        
+        try {
+            Employee_list.write(path, this.list);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
+            return;
+        }
+        
+        fillTable();
+        clearForm();
+        JOptionPane.showMessageDialog(this, "Lưu thành công");
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        String ID = this.txtMANV.getText();
+        
+        if (ID.equals("")) {
+            JOptionPane.showMessageDialog(this, "Bạn phải nhập mã nhân viên!");
+            return;
+        }
+        
+        this.list.RemoveByID(ID);
+        JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công");
+        fillTable();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        try {
+            Employee_list.write(path, this.list);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
+            return;
+        }
+        System.exit(0);
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+        Employee_list listNV = new Employee_list();
+        
+        try {
+            listNV = (Employee_list)Employee_list.read(path);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "đọc file thất bại");
+        } catch (ClassNotFoundException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "đọc file thất bại");
+        }
+        for (Employee nv : listNV.getList()) {
+            this.list.Add(nv);
+        }
+        
+        this.fillTable();
+    }//GEN-LAST:event_btnOpenActionPerformed
+
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
+        String ID = this.txtMANV.getText();
+        
+        if (ID.equals("")) {
+            JOptionPane.showMessageDialog(this, "Bạn phải nhập mã nhân viên!");
+            return;
+        }
+        
+        int index = this.list.getList().indexOf(this.list.findByID(ID));
+        
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên nào có mã: " + ID);
+        }
+        fillForm(index);
+    }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        this.list.first();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        this.list.last();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnPreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreActionPerformed
+        this.list.pre();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnPreActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        this.list.next();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    
+    
+    public void fillForm(int index) {
+        Employee nv = (Employee) this.list.getList().get(index);
+
+        this.txtMANV.setText(nv.getManv());
+        this.txtHoTen.setText(nv.getHoTen());
+        this.txtTuoi.setText(Integer.toString(nv.getTuoi()));
+        this.txtEmail.setText(nv.getEmail());
+        this.txtLuong.setText(Double.toString(nv.getLuong()));
+        this.lblRecord.setText("Record: " + (index + 1) + " of " + this.list.getList().size());
+    }
 
     public void clearForm() {
         this.txtEmail.setText("");
@@ -468,13 +679,22 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         this.txtMANV.setText("");
         this.txtTuoi.setText("");
 
+        this.lblErrorMANV.setText("");
         this.lblErrorEmail.setText("");
         this.lblErrorHoTen.setText("");
         this.lblErrorLuong.setText("");
         this.lblErrorTuoi.setText("");
+        
+        this.txtTuoi.setBackground(Color.white);
+        this.txtEmail.setBackground(Color.white);
+        this.txtMANV.setBackground(Color.white);
+        this.txtLuong.setBackground(Color.white);
+        this.txtHoTen.setBackground(Color.white);
+        this.list.setCurrentIndex(-1);
+        fillTable();
     }
 
-    public boolean checkForm(){
+    public boolean checkForm() {
         boolean a = true;
         String manv = this.txtMANV.getText();
         String hoTen = this.txtHoTen.getText();
@@ -482,65 +702,159 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         String email = this.txtEmail.getText();
         String luong = this.txtLuong.getText();
         int index = this.cbbLanguge.getSelectedIndex();
-        
+
+//Validate mã nhân viên        
         if (manv.equals("")) {
             if (index == 0) {
                 this.lblErrorMANV.setText("Mã Nhân viên không được để trống!");
             } else {
                 this.lblErrorMANV.setText("Employee ID cannot be empty!");
             }
+            this.txtMANV.setBackground(Color.red);
             a = false;
         } else {
             this.lblErrorMANV.setText("");
+            this.txtMANV.setBackground(Color.white);
         }
-        
+
+//Validate Họ Và Tên
         if (hoTen.equals("")) {
             if (index == 0) {
                 this.lblErrorHoTen.setText("Họ tên không được để trống!");
             } else {
                 this.lblErrorHoTen.setText("Fullname cannot be empty!");
             }
+            this.txtHoTen.setBackground(Color.red);
             a = false;
         } else {
-            this.lblHoTen.setText("");
+            this.lblErrorHoTen.setText("");
+            this.txtHoTen.setBackground(Color.white);
         }
-        
+
+//validate tuổi 
         if (tuoi.equals("")) {
             if (index == 0) {
                 this.lblErrorTuoi.setText("Tuổi không được để trống!");
             } else {
                 this.lblErrorTuoi.setText("Age cannot be empty!");
             }
+            this.txtTuoi.setBackground(Color.red);
             a = false;
         } else {
             this.lblErrorTuoi.setText("");
+            this.txtTuoi.setBackground(Color.white);
         }
-        
+        if (tuoi.equals("") == false) {
+            try {
+                int age = Integer.parseInt(tuoi);
+                if (age < 16 || age > 55) {
+                    if (index == 0) {
+                    this.lblErrorTuoi.setText("Tuổi phải từ 16 -> 55!");
+                } else {
+                    this.lblErrorTuoi.setText("Age must be from 16 -> 55!");
+                }
+                this.txtTuoi.setBackground(Color.red);
+                a = false;
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                if (index == 0) {
+                    this.lblErrorTuoi.setText("Tuổi không hợp lệ!");
+                } else {
+                    this.lblErrorTuoi.setText("Invalid age!");
+                }
+                this.txtTuoi.setBackground(Color.red);
+                a = false;
+            }
+        }
+
+//validate Email 
         if (email.equals("")) {
             if (index == 0) {
                 this.lblErrorEmail.setText("Email không được để trống!");
             } else {
                 this.lblErrorEmail.setText("Email cannot be empty!");
             }
+            this.txtEmail.setBackground(Color.red);
             a = false;
         } else {
             this.lblErrorEmail.setText("");
+            this.txtEmail.setBackground(Color.white);
         }
         
+//validate lương
         if (luong.equals("")) {
             if (index == 0) {
                 this.lblErrorLuong.setText("Luong không được để trống!");
             } else {
                 this.lblErrorLuong.setText("Salary cannot be empty!");
             }
+            this.txtLuong.setBackground(Color.red);
             a = false;
-        } else {
+
+        } else {         
             this.lblErrorLuong.setText("");
+            this.txtLuong.setBackground(Color.white);
         }
         
+        if (luong.equals("") == false) {
+             try {
+                double salary = Double.parseDouble(luong);
+                if (salary < 0) {
+                    if (index == 0){
+                        this.lblErrorLuong.setText("lương phải lớn hơn 0!");
+                    } else {
+                        this.lblErrorLuong.setText("salary must be greater than 0!");
+                    }
+                    this.txtLuong.setBackground(Color.red);
+                    a = false;
+
+                } else {
+                    if (salary < 5000000) {
+                    if (index == 0){
+                        this.lblErrorLuong.setText("lương phải lớn hơn 5000000!");
+                    } else {
+                        this.lblErrorLuong.setText("salary must be greater than 5000000!");
+                    }
+                    this.txtLuong.setBackground(Color.red);
+                    a = false;
+
+                }
+                }
+            } catch (NumberFormatException e) {
+                e.printStackTrace();
+                if (index == 0) {
+                    this.lblErrorLuong.setText("Lương không hợp lệ!");
+
+                } else {
+                    this.lblErrorLuong.setText("Invalid salary!");
+
+                }
+                this.txtLuong.setBackground(Color.red);
+                a = false;
+            }
+
+        }
+
         return a;
     }
     
+    public Employee getDanhSach(){
+        String id, hoTen, email;
+        double luong;
+        int tuoi;
+        
+        id = this.txtMANV.getText();
+        hoTen = this.txtHoTen.getText();
+        tuoi = Integer.parseInt(this.txtTuoi.getText());
+        email = this.txtEmail.getText();
+        luong = Double.parseDouble(this.txtLuong.getText());
+        
+        Employee nv = new Employee(id, hoTen, email, luong, tuoi);
+        
+        return nv;
+    }
+
     /**
      * @param args the command line arguments
      */
@@ -580,12 +894,12 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnExit;
     private javax.swing.JButton btnFind;
+    private javax.swing.JButton btnFirst;
+    private javax.swing.JButton btnLast;
     private javax.swing.JButton btnNew;
     private javax.swing.JButton btnNext;
-    private javax.swing.JButton btnNextList;
     private javax.swing.JButton btnOpen;
     private javax.swing.JButton btnPre;
-    private javax.swing.JButton btnPreList;
     private javax.swing.JButton btnSave;
     private javax.swing.JComboBox<String> cbbLanguge;
     private javax.swing.JFrame jFrame1;
