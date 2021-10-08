@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Employee_form;
 
 /**
@@ -11,12 +6,9 @@ package Employee_form;
  */
 public class EmployeeManagement_form extends javax.swing.JFrame {
 
-    /**
-     * Creates new form EmployeeManagement_form
-     */
     public EmployeeManagement_form() {
         initComponents();
-        
+
         setLocationRelativeTo(null);
     }
 
@@ -60,7 +52,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         lblErrorHoTen = new javax.swing.JLabel();
         lblErrorEmail = new javax.swing.JLabel();
         lblErrorLuong = new javax.swing.JLabel();
-        lbnErrorMANV = new javax.swing.JLabel();
+        lblErrorMANV = new javax.swing.JLabel();
         jScrollPane2 = new javax.swing.JScrollPane();
         tblQLNV = new javax.swing.JTable();
         btnPreList = new javax.swing.JButton();
@@ -118,8 +110,14 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         lblLuong.setText("LƯƠNG");
 
         jPanel2.setBackground(new java.awt.Color(255, 204, 204));
+        jPanel2.setBorder(javax.swing.BorderFactory.createBevelBorder(javax.swing.border.BevelBorder.RAISED));
 
         btnNew.setText("NEW");
+        btnNew.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnNewActionPerformed(evt);
+            }
+        });
 
         btnSave.setText("SAVE");
 
@@ -168,9 +166,15 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         lblTime.setForeground(new java.awt.Color(255, 0, 0));
         lblTime.setText("10:10 PM");
 
+        cbbLanguge.setBackground(new java.awt.Color(204, 255, 204));
         cbbLanguge.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiếng Việt", "English" }));
+        cbbLanguge.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                cbbLangugeActionPerformed(evt);
+            }
+        });
 
-        lblLanguge.setText("Ngôn Ngữ");
+        lblLanguge.setText("Ngôn Ngữ:");
 
         lblErrorTuoi.setFont(new java.awt.Font("Arial", 2, 11)); // NOI18N
         lblErrorTuoi.setForeground(new java.awt.Color(255, 51, 51));
@@ -184,9 +188,10 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         lblErrorLuong.setFont(new java.awt.Font("Arial", 2, 11)); // NOI18N
         lblErrorLuong.setForeground(new java.awt.Color(255, 51, 51));
 
-        lbnErrorMANV.setFont(new java.awt.Font("Arial", 2, 11)); // NOI18N
-        lbnErrorMANV.setForeground(new java.awt.Color(255, 51, 51));
+        lblErrorMANV.setFont(new java.awt.Font("Arial", 2, 11)); // NOI18N
+        lblErrorMANV.setForeground(new java.awt.Color(255, 51, 51));
 
+        tblQLNV.setFont(new java.awt.Font("Arial", 0, 14)); // NOI18N
         tblQLNV.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
@@ -238,9 +243,9 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addGap(99, 99, 99)
                         .addComponent(lblQLNV, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblLanguge, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 49, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbbLanguge, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -255,7 +260,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                                             .addComponent(lblErrorTuoi, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblErrorHoTen, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
                                             .addComponent(lblErrorEmail, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                            .addComponent(lbnErrorMANV, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                            .addComponent(lblErrorMANV, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE))
                                         .addGap(100, 100, 100))
                                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                         .addComponent(lblErrorLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 332, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -287,7 +292,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                                         .addComponent(txtTuoi, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)))
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                             .addComponent(lblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                             .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
@@ -343,7 +348,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addComponent(lbnErrorMANV, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addComponent(lblErrorMANV, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
                         .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -376,6 +381,166 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    private void cbbLangugeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbLangugeActionPerformed
+        int index = this.cbbLanguge.getSelectedIndex();
+
+        switch (index) {
+            case 0:
+                this.lblQLNV.setText("QUẢN LÝ NHÂN VIÊN");
+                this.lblMANV.setText("MÃ NHÂN VIÊN");
+                this.lblHoTen.setText("HỌ VÀ TÊN");
+                this.lblEmail.setText("EMAIL");
+                this.lblLuong.setText("LƯƠNG");
+                this.lblTuoi.setText("TUỔI");
+                this.lblLanguge.setText("Ngôn Ngữ:");
+                tblQLNV.setModel(new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{
+                            "Mã", "Họ Tên", "Tuổi", "Email", "Lương"
+                        }
+                ) {
+                    Class[] types = new Class[]{
+                        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, true, false, true
+                    };
+
+                    @Override
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                
+                break;
+                
+            case 1:
+                this.lblQLNV.setText("STAFF MANAGEMENT");
+                this.lblMANV.setText("STAFF ID");
+                this.lblHoTen.setText("FULLNAME");
+                this.lblEmail.setText("EMAIL");
+                this.lblLuong.setText("SALARY");
+                this.lblTuoi.setText("AGE");
+                this.lblLanguge.setText("Language:");
+                tblQLNV.setModel(new javax.swing.table.DefaultTableModel(
+                        new Object[][]{},
+                        new String[]{
+                            "ID", "Fullname", "Age", "Email", "Salary"
+                        }
+                ) {
+                    Class[] types = new Class[]{
+                        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
+                    };
+                    boolean[] canEdit = new boolean[]{
+                        false, false, true, false, true
+                    };
+
+                    @Override
+                    public Class getColumnClass(int columnIndex) {
+                        return types[columnIndex];
+                    }
+
+                    @Override
+                    public boolean isCellEditable(int rowIndex, int columnIndex) {
+                        return canEdit[columnIndex];
+                    }
+                });
+                break;
+
+        }
+    }//GEN-LAST:event_cbbLangugeActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        if (checkForm() == false) {
+            return;
+        }
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    public void clearForm() {
+        this.txtEmail.setText("");
+        this.txtHoTen.setText("");
+        this.txtLuong.setText("");
+        this.txtMANV.setText("");
+        this.txtTuoi.setText("");
+
+        this.lblErrorEmail.setText("");
+        this.lblErrorHoTen.setText("");
+        this.lblErrorLuong.setText("");
+        this.lblErrorTuoi.setText("");
+    }
+
+    public boolean checkForm(){
+        boolean a = true;
+        String manv = this.txtMANV.getText();
+        String hoTen = this.txtHoTen.getText();
+        String tuoi = this.txtTuoi.getText();
+        String email = this.txtEmail.getText();
+        String luong = this.txtLuong.getText();
+        int index = this.cbbLanguge.getSelectedIndex();
+        
+        if (manv.equals("")) {
+            if (index == 0) {
+                this.lblErrorMANV.setText("Mã Nhân viên không được để trống!");
+            } else {
+                this.lblErrorMANV.setText("Employee ID cannot be empty!");
+            }
+            a = false;
+        } else {
+            this.lblErrorMANV.setText("");
+        }
+        
+        if (hoTen.equals("")) {
+            if (index == 0) {
+                this.lblErrorHoTen.setText("Họ tên không được để trống!");
+            } else {
+                this.lblErrorHoTen.setText("Fullname cannot be empty!");
+            }
+            a = false;
+        } else {
+            this.lblHoTen.setText("");
+        }
+        
+        if (tuoi.equals("")) {
+            if (index == 0) {
+                this.lblErrorTuoi.setText("Tuổi không được để trống!");
+            } else {
+                this.lblErrorTuoi.setText("Age cannot be empty!");
+            }
+            a = false;
+        } else {
+            this.lblErrorTuoi.setText("");
+        }
+        
+        if (email.equals("")) {
+            if (index == 0) {
+                this.lblErrorEmail.setText("Email không được để trống!");
+            } else {
+                this.lblErrorEmail.setText("Email cannot be empty!");
+            }
+            a = false;
+        } else {
+            this.lblErrorEmail.setText("");
+        }
+        
+        if (luong.equals("")) {
+            if (index == 0) {
+                this.lblErrorLuong.setText("Luong không được để trống!");
+            } else {
+                this.lblErrorLuong.setText("Salary cannot be empty!");
+            }
+            a = false;
+        } else {
+            this.lblErrorLuong.setText("");
+        }
+        
+        return a;
+    }
+    
     /**
      * @param args the command line arguments
      */
@@ -435,6 +600,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
     private javax.swing.JLabel lblErrorEmail;
     private javax.swing.JLabel lblErrorHoTen;
     private javax.swing.JLabel lblErrorLuong;
+    private javax.swing.JLabel lblErrorMANV;
     private javax.swing.JLabel lblErrorTuoi;
     private javax.swing.JLabel lblHoTen;
     private javax.swing.JLabel lblLanguge;
@@ -444,7 +610,6 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
     private javax.swing.JLabel lblRecord;
     private javax.swing.JLabel lblTime;
     private javax.swing.JLabel lblTuoi;
-    private javax.swing.JLabel lbnErrorMANV;
     private javax.swing.JTable tblQLNV;
     private javax.swing.JTextField txtEmail;
     private javax.swing.JTextField txtHoTen;
