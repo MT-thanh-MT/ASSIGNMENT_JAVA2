@@ -2,11 +2,16 @@ package Employee_form;
 
 import Model.Employee;
 import Model.Employee_list;
+import Thread.runTextThread;
 import java.awt.Color;
 import java.io.IOException;
+import static java.lang.String.format;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -14,39 +19,24 @@ import javax.swing.table.DefaultTableModel;
  *
  * @author XUÂN THÀNH
  */
-public class EmployeeManagement_form extends javax.swing.JFrame {
-
+public class EmployeeManagement_form extends javax.swing.JFrame implements Runnable {
+    
+    
+    private Thread rt,time;
+    private boolean read = true, thread = true;
     private Employee_list list;
-    private String path = "E:\\hoctap\\JAVA2\\ASSIGNMENT_JAVA2\\Assignment_thanhmxph18759\\List_Employee.txt";
+    private String path;
 
     public EmployeeManagement_form() {
         initComponents();
 
         setLocationRelativeTo(null);
         this.list = new Employee_list();
-        
-        
-    }
+        time = new Thread(this);
+        time.start();
+        rt = new runTextThread(lblTexRun);
+        rt.start();
 
-    private void fillTable() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblQLNV.getModel();
-
-        dtm.setRowCount(0);
-
-        ArrayList<Employee> ds = this.list.getList();
-        for (int i = 0; i < ds.size(); i++) {
-            Employee nv = (Employee) ds.get(i);
-
-            Object[] rowData = new Object[]{
-                nv.getManv(),
-                nv.getHoTen(),
-                nv.getTuoi(),
-                nv.getEmail(),
-                nv.getLuong()
-            };
-
-            dtm.addRow(rowData);
-        }
     }
 
     /**
@@ -97,6 +87,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         btnNext = new javax.swing.JButton();
         btnLast = new javax.swing.JButton();
         lblRecord = new javax.swing.JLabel();
+        lblTexRun = new javax.swing.JLabel();
 
         javax.swing.GroupLayout jFrame1Layout = new javax.swing.GroupLayout(jFrame1.getContentPane());
         jFrame1.getContentPane().setLayout(jFrame1Layout);
@@ -319,6 +310,23 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         lblRecord.setForeground(new java.awt.Color(255, 51, 51));
         lblRecord.setText("Record: 0 of 0");
 
+        lblTexRun.setFont(new java.awt.Font("Times New Roman", 1, 24)); // NOI18N
+        lblTexRun.setText("                   -----         @design by Xuân Thành        ----                       ");
+        lblTexRun.addAncestorListener(new javax.swing.event.AncestorListener() {
+            public void ancestorAdded(javax.swing.event.AncestorEvent evt) {
+                lblTexRunAncestorAdded(evt);
+            }
+            public void ancestorMoved(javax.swing.event.AncestorEvent evt) {
+            }
+            public void ancestorRemoved(javax.swing.event.AncestorEvent evt) {
+            }
+        });
+        lblTexRun.addMouseMotionListener(new java.awt.event.MouseMotionAdapter() {
+            public void mouseMoved(java.awt.event.MouseEvent evt) {
+                lblTexRunMouseMoved(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -326,18 +334,18 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
             .addComponent(jSeparator1)
             .addComponent(jSeparator2, javax.swing.GroupLayout.Alignment.TRAILING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addGap(99, 99, 99)
                         .addComponent(lblQLNV, javax.swing.GroupLayout.PREFERRED_SIZE, 397, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(lblLanguge, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                         .addComponent(cbbLanguge, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.LEADING, jPanel1Layout.createSequentialGroup()
+                    .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
                         .addComponent(jScrollPane2))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
@@ -379,10 +387,13 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                                         .addComponent(txtTuoi, javax.swing.GroupLayout.PREFERRED_SIZE, 138, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtEmail, javax.swing.GroupLayout.PREFERRED_SIZE, 398, javax.swing.GroupLayout.PREFERRED_SIZE)
                                         .addComponent(txtLuong, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)))
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(lblTime, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                            .addComponent(jPanel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))))
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(lblTime, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblTexRun, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -433,7 +444,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                         .addGap(0, 0, Short.MAX_VALUE))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(lblTime, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(lblErrorMANV, javax.swing.GroupLayout.PREFERRED_SIZE, 22, javax.swing.GroupLayout.PREFERRED_SIZE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 13, Short.MAX_VALUE)
@@ -447,8 +458,10 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                     .addComponent(lblRecord))
                 .addGap(18, 18, 18)
                 .addComponent(jSeparator2, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(lblTexRun, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 205, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(jScrollPane2, javax.swing.GroupLayout.PREFERRED_SIZE, 151, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
 
@@ -460,15 +473,283 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbbLangugeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbLangugeActionPerformed
+        language();
+    }//GEN-LAST:event_cbbLangugeActionPerformed
+
+    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
+        clearForm();
+    }//GEN-LAST:event_btnNewActionPerformed
+
+    private void tblQLNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNVMouseClicked
+        MouseClick();
+    }//GEN-LAST:event_tblQLNVMouseClicked
+
+    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
+        save();
+    }//GEN-LAST:event_btnSaveActionPerformed
+
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+        delete();
+    }//GEN-LAST:event_btnDeleteActionPerformed
+
+    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
+        exit();
+    }//GEN-LAST:event_btnExitActionPerformed
+
+    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
+        
+        open();
+    }//GEN-LAST:event_btnOpenActionPerformed
+
+    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
+        findByID();
+    }//GEN-LAST:event_btnFindActionPerformed
+
+    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
+        this.list.first();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnFirstActionPerformed
+
+    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
+        this.list.last();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnLastActionPerformed
+
+    private void btnPreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreActionPerformed
+        this.list.pre();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnPreActionPerformed
+
+    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
+        this.list.next();
+        fillForm(this.list.getCurrentEmployeeIndex());
+    }//GEN-LAST:event_btnNextActionPerformed
+
+    private void lblTexRunMouseMoved(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_lblTexRunMouseMoved
+        if (thread == true) {
+            rt.suspend();
+            thread = false;
+        } else {
+            rt.resume();
+            thread = true;
+        }
+    }//GEN-LAST:event_lblTexRunMouseMoved
+
+    private void lblTexRunAncestorAdded(javax.swing.event.AncestorEvent evt) {//GEN-FIRST:event_lblTexRunAncestorAdded
+        
+    }//GEN-LAST:event_lblTexRunAncestorAdded
+
+
+
+    @Override //run oclock
+    public void run() {
+
+        while (true) {
+            Calendar now = Calendar.getInstance();
+            int hour = now.get(Calendar.HOUR_OF_DAY);
+            int minute = now.get(Calendar.MINUTE);
+            int second = now.get(Calendar.SECOND);
+
+            String txt = hour + ":" + minute + ":" + second;
+            this.lblTime.setText(txt);
+
+            try {
+                Thread.sleep(1000);
+            } catch (InterruptedException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
+    private void fillTable() {
+        DefaultTableModel dtm = (DefaultTableModel) this.tblQLNV.getModel();
+
+        dtm.setRowCount(0);
+
+        ArrayList<Employee> ds = this.list.getList();
+        for (int i = 0; i < ds.size(); i++) {
+            Employee nv = (Employee) ds.get(i);
+
+            Object[] rowData = new Object[]{
+                nv.getManv(),
+                nv.getHoTen(),
+                nv.getTuoi(),
+                nv.getEmail(),
+                format("%.2f", nv.getLuong())
+            };
+
+            dtm.addRow(rowData);
+        }
+    }
+
+    public void fillForm(int index) {
+        Employee nv = (Employee) this.list.getList().get(index);
+
+        this.txtMANV.setText(nv.getManv());
+        this.txtHoTen.setText(nv.getHoTen());
+        this.txtTuoi.setText(Integer.toString(nv.getTuoi()));
+        this.txtEmail.setText(nv.getEmail());
+        this.txtLuong.setText(String.valueOf(format("%.2f", nv.getLuong())));
+        this.lblRecord.setText("Record: " + (index + 1) + " of " + this.list.getList().size());
+
+        if (index <= 0) {
+            this.btnFirst.setEnabled(false);
+            this.btnPre.setEnabled(false);
+            this.btnLast.setEnabled(true);
+            this.btnNext.setEnabled(true);
+        } else if (index >= this.list.getList().size() - 1) {
+            btnFirst.setEnabled(true);
+            btnPre.setEnabled(true);
+            btnLast.setEnabled(false);
+            btnNext.setEnabled(false);
+        } else {
+            btnFirst.setEnabled(true);
+            btnPre.setEnabled(true);
+            btnLast.setEnabled(true);
+            btnNext.setEnabled(true);
+        }
+    }
+
+    public void findByID() {
+        if (read == true) {
+            JOptionPane.showMessageDialog(this, "Chưa Open file!");
+            return;
+        }
+        String ID = this.txtMANV.getText();
+
+        if (ID.equals("")) {
+            JOptionPane.showMessageDialog(this, "Bạn phải nhập mã nhân viên!");
+            return;
+        }
+
+        int index = this.list.getList().indexOf(this.list.findByID(ID));
+
+        if (index == -1) {
+            JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên nào có mã: " + ID);
+        }
+        fillForm(index);
+    }
+
+    public void open() {
+        this.path = JOptionPane.showInputDialog("Nhập đường dẫn đến file chứa danh sách");
+        
+        Employee_list listNV = new Employee_list();
+        
+        if (read == false) {
+            JOptionPane.showMessageDialog(this, "File đã được mở");
+            return;
+        } else {
+            try {
+                listNV = (Employee_list) Employee_list.read(path);
+                this.read = false;
+
+            } catch (IOException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "đọc file thất bại");
+            } catch (ClassNotFoundException ex) {
+                ex.printStackTrace();
+                JOptionPane.showMessageDialog(this, "đọc file thất bại");
+            }
+            for (Employee nv : listNV.getList()) {
+                this.list.Add(nv);
+            }
+
+        }
+
+        this.fillTable();
+        fillForm(0);
+    }
+
+    public void exit() {
+        try {
+            Employee_list.write(path, this.list);
+        } catch (IOException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
+            return;
+        }
+        System.exit(0);
+    }
+
+    public void delete() {
+        if (read == true) {
+            JOptionPane.showMessageDialog(this, "Chưa Open file!");
+            return;
+        }
+        String ID = this.txtMANV.getText();
+
+        if (ID.equals("")) {
+            JOptionPane.showMessageDialog(this, "Bạn phải nhập mã nhân viên!");
+            return;
+        }
+        int xacNhan = JOptionPane.showConfirmDialog(this, "Bạn có chắc muốn xóa bản ghi không?");
+
+        if (xacNhan == JOptionPane.YES_OPTION) {
+            boolean a = this.list.RemoveByID(ID);
+            if (a == false) {
+                JOptionPane.showMessageDialog(this, "Xóa nhân viên thất bại, không tìm thấy nhân viên nào có mã: " + ID);
+                return;
+            }
+            JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công");
+            fillTable();
+        } else if (xacNhan == JOptionPane.NO_OPTION) {
+            return;
+        } else if (xacNhan == JOptionPane.CANCEL_OPTION) {
+            return;
+        }
+
+    }
+
+    public void save() {
+        if (read == true) {
+            JOptionPane.showMessageDialog(this, "Chưa Open file!");
+            return;
+        }
+        if (checkForm() == false) {
+            return;
+        }
+
+        if (list.getCurrentEmployeeIndex() == -1) {
+            if (this.list.findByID(this.txtMANV.getText()) != null) {
+                JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại");
+                return;
+            }
+            this.list.Add(getDanhSach());
+
+        } else {
+            if (this.list.findByID(this.txtMANV.getText()) == this.list.getCurrentEmployee()) {
+                this.list.Update(list.getCurrentEmployeeIndex(), getDanhSach());
+            } else if (this.list.findByID(this.txtMANV.getText()) != null) {
+
+                JOptionPane.showMessageDialog(this, "Mã nhân viên đã tồn tại");
+                return;
+            } else {
+                this.list.Update(list.getCurrentEmployeeIndex(), getDanhSach());
+            }
+
+        }
+
+        fillTable();
+        clearForm();
+        JOptionPane.showMessageDialog(this, "Lưu thành công");
+    }
+
+    public void MouseClick() {
+        list.setCurrentIndex(this.tblQLNV.getSelectedRow());
+        if (list.getCurrentEmployeeIndex() == -1) {
+            return;
+        }
+        fillForm(list.getCurrentEmployeeIndex());
+    }
+
+    public void language() {
         int index = this.cbbLanguge.getSelectedIndex();
 
         switch (index) {
@@ -541,135 +822,6 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
 
         }
         fillTable();
-    }//GEN-LAST:event_cbbLangugeActionPerformed
-
-    private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
-        clearForm();
-    }//GEN-LAST:event_btnNewActionPerformed
-
-    private void tblQLNVMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_tblQLNVMouseClicked
-        list.setCurrentIndex(this.tblQLNV.getSelectedRow());
-        if (list.getCurrentEmployeeIndex() == -1) {
-            return;
-        }
-        fillForm(list.getCurrentEmployeeIndex());
-    }//GEN-LAST:event_tblQLNVMouseClicked
-
-    private void btnSaveActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSaveActionPerformed
-        if (checkForm() == false) {
-            return;
-        }
-        
-        if (list.getCurrentEmployeeIndex() == -1) {
-            this.list.Add(getDanhSach());
-            
-        } else {
-            this.list.Update(list.getCurrentEmployeeIndex(), getDanhSach());
-        }
-        
-        try {
-            Employee_list.write(path, this.list);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
-            return;
-        }
-        
-        fillTable();
-        clearForm();
-        JOptionPane.showMessageDialog(this, "Lưu thành công");
-    }//GEN-LAST:event_btnSaveActionPerformed
-
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        String ID = this.txtMANV.getText();
-        
-        if (ID.equals("")) {
-            JOptionPane.showMessageDialog(this, "Bạn phải nhập mã nhân viên!");
-            return;
-        }
-        
-        this.list.RemoveByID(ID);
-        JOptionPane.showMessageDialog(this, "Xóa nhân viên thành công");
-        fillTable();
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
-    private void btnExitActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExitActionPerformed
-        try {
-            Employee_list.write(path, this.list);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "Ghi file thất bại");
-            return;
-        }
-        System.exit(0);
-    }//GEN-LAST:event_btnExitActionPerformed
-
-    private void btnOpenActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnOpenActionPerformed
-        Employee_list listNV = new Employee_list();
-        
-        try {
-            listNV = (Employee_list)Employee_list.read(path);
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "đọc file thất bại");
-        } catch (ClassNotFoundException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(this, "đọc file thất bại");
-        }
-        for (Employee nv : listNV.getList()) {
-            this.list.Add(nv);
-        }
-        
-        this.fillTable();
-    }//GEN-LAST:event_btnOpenActionPerformed
-
-    private void btnFindActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFindActionPerformed
-        String ID = this.txtMANV.getText();
-        
-        if (ID.equals("")) {
-            JOptionPane.showMessageDialog(this, "Bạn phải nhập mã nhân viên!");
-            return;
-        }
-        
-        int index = this.list.getList().indexOf(this.list.findByID(ID));
-        
-        if (index == -1) {
-            JOptionPane.showMessageDialog(this, "Không tìm thấy nhân viên nào có mã: " + ID);
-        }
-        fillForm(index);
-    }//GEN-LAST:event_btnFindActionPerformed
-
-    private void btnFirstActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnFirstActionPerformed
-        this.list.first();
-        fillForm(this.list.getCurrentEmployeeIndex());
-    }//GEN-LAST:event_btnFirstActionPerformed
-
-    private void btnLastActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLastActionPerformed
-        this.list.last();
-        fillForm(this.list.getCurrentEmployeeIndex());
-    }//GEN-LAST:event_btnLastActionPerformed
-
-    private void btnPreActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPreActionPerformed
-        this.list.pre();
-        fillForm(this.list.getCurrentEmployeeIndex());
-    }//GEN-LAST:event_btnPreActionPerformed
-
-    private void btnNextActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNextActionPerformed
-        this.list.next();
-        fillForm(this.list.getCurrentEmployeeIndex());
-    }//GEN-LAST:event_btnNextActionPerformed
-
-    
-    
-    public void fillForm(int index) {
-        Employee nv = (Employee) this.list.getList().get(index);
-
-        this.txtMANV.setText(nv.getManv());
-        this.txtHoTen.setText(nv.getHoTen());
-        this.txtTuoi.setText(Integer.toString(nv.getTuoi()));
-        this.txtEmail.setText(nv.getEmail());
-        this.txtLuong.setText(Double.toString(nv.getLuong()));
-        this.lblRecord.setText("Record: " + (index + 1) + " of " + this.list.getList().size());
     }
 
     public void clearForm() {
@@ -684,7 +836,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
         this.lblErrorHoTen.setText("");
         this.lblErrorLuong.setText("");
         this.lblErrorTuoi.setText("");
-        
+
         this.txtTuoi.setBackground(Color.white);
         this.txtEmail.setBackground(Color.white);
         this.txtMANV.setBackground(Color.white);
@@ -749,12 +901,12 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
                 int age = Integer.parseInt(tuoi);
                 if (age < 16 || age > 55) {
                     if (index == 0) {
-                    this.lblErrorTuoi.setText("Tuổi phải từ 16 -> 55!");
-                } else {
-                    this.lblErrorTuoi.setText("Age must be from 16 -> 55!");
-                }
-                this.txtTuoi.setBackground(Color.red);
-                a = false;
+                        this.lblErrorTuoi.setText("Tuổi phải từ 16 -> 55!");
+                    } else {
+                        this.lblErrorTuoi.setText("Age must be from 16 -> 55!");
+                    }
+                    this.txtTuoi.setBackground(Color.red);
+                    a = false;
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -781,7 +933,19 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
             this.lblErrorEmail.setText("");
             this.txtEmail.setBackground(Color.white);
         }
-        
+        Pattern p = Pattern.compile("\\w+@\\w+\\.\\w+");
+        Matcher m = p.matcher(email);
+
+        if (!m.find()) {
+            if (index == 0) {
+                this.lblErrorEmail.setText("Email không đúng định dạng!");
+            } else {
+                this.lblErrorEmail.setText("Incorrect email format!");
+            }
+            this.txtEmail.setBackground(Color.red);
+            a = false;
+        }
+
 //validate lương
         if (luong.equals("")) {
             if (index == 0) {
@@ -792,16 +956,16 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
             this.txtLuong.setBackground(Color.red);
             a = false;
 
-        } else {         
+        } else {
             this.lblErrorLuong.setText("");
             this.txtLuong.setBackground(Color.white);
         }
-        
+
         if (luong.equals("") == false) {
-             try {
+            try {
                 double salary = Double.parseDouble(luong);
                 if (salary < 0) {
-                    if (index == 0){
+                    if (index == 0) {
                         this.lblErrorLuong.setText("lương phải lớn hơn 0!");
                     } else {
                         this.lblErrorLuong.setText("salary must be greater than 0!");
@@ -811,15 +975,15 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
 
                 } else {
                     if (salary < 5000000) {
-                    if (index == 0){
-                        this.lblErrorLuong.setText("lương phải lớn hơn 5000000!");
-                    } else {
-                        this.lblErrorLuong.setText("salary must be greater than 5000000!");
-                    }
-                    this.txtLuong.setBackground(Color.red);
-                    a = false;
+                        if (index == 0) {
+                            this.lblErrorLuong.setText("lương phải lớn hơn 5000000!");
+                        } else {
+                            this.lblErrorLuong.setText("salary must be greater than 5000000!");
+                        }
+                        this.txtLuong.setBackground(Color.red);
+                        a = false;
 
-                }
+                    }
                 }
             } catch (NumberFormatException e) {
                 e.printStackTrace();
@@ -838,20 +1002,20 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
 
         return a;
     }
-    
-    public Employee getDanhSach(){
+
+    public Employee getDanhSach() {
         String id, hoTen, email;
         double luong;
         int tuoi;
-        
+
         id = this.txtMANV.getText();
         hoTen = this.txtHoTen.getText();
         tuoi = Integer.parseInt(this.txtTuoi.getText());
         email = this.txtEmail.getText();
         luong = Double.parseDouble(this.txtLuong.getText());
-        
+
         Employee nv = new Employee(id, hoTen, email, luong, tuoi);
-        
+
         return nv;
     }
 
@@ -922,6 +1086,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
     private javax.swing.JLabel lblMANV;
     private javax.swing.JLabel lblQLNV;
     private javax.swing.JLabel lblRecord;
+    private javax.swing.JLabel lblTexRun;
     private javax.swing.JLabel lblTime;
     private javax.swing.JLabel lblTuoi;
     private javax.swing.JTable tblQLNV;
@@ -931,4 +1096,5 @@ public class EmployeeManagement_form extends javax.swing.JFrame {
     private javax.swing.JTextField txtMANV;
     private javax.swing.JTextField txtTuoi;
     // End of variables declaration//GEN-END:variables
+
 }

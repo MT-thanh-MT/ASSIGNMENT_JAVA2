@@ -5,13 +5,21 @@ import java.util.ArrayList;
 /**
  *
  * @author XUÂN THÀNH
+ * @param <E> Employee
  */
-public interface Employee_list_interface {
-    public void Add(Employee nv);
-    public void Update(int n,Employee nv);
+public interface Employee_list_interface<E> {
+    
+    public void Add(E nv);
+    
+    public void Update(int n,E nv);
+    
     public boolean RemoveByID(String ID);
-    public Employee findByID(String ID);
-    public ArrayList<Employee> getList();
-    public void setList(ArrayList<Employee> list);
+    
+    public E findByID(String ID);
+    
+    public ArrayList<E> getList();
+    
+    public void setList(ArrayList<E> list);
+    
     
 }

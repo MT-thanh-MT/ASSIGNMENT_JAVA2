@@ -17,7 +17,7 @@ import java.util.ArrayList;
  *
  * @author XUÂN THÀNH
  */
-public class Employee_list implements Employee_list_interface{
+public class Employee_list implements Employee_list_interface<Employee>{
     private ArrayList<Employee> list;
     private int currentIndex = -1;
 
