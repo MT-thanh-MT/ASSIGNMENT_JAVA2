@@ -1,8 +1,11 @@
 package Employee_form;
 
+import Language.Language;
 import Model.Employee;
 import Model.Employee_list;
+import Model.Employee_list_interface;
 import Thread.runTextThread;
+import com.sun.java.accessibility.util.EventID;
 import java.awt.Color;
 import java.io.IOException;
 import static java.lang.String.format;
@@ -26,12 +29,16 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
     private boolean read = true, thread = true;
     private Employee_list list;
     private String path;
+    private DefaultTableModel dtm;
+    private Language lg;
 
     public EmployeeManagement_form() {
         initComponents();
 
         setLocationRelativeTo(null);
         this.list = new Employee_list();
+        this.lg = new Language(cbbLanguge, lblHoTen, lblLanguge, lblLuong, lblMANV, lblQLNV, tblQLNV, lblTuoi, lblEmail);
+        dtm = (DefaultTableModel) this.tblQLNV.getModel();
         time = new Thread(this);
         time.start();
         rt = new runTextThread(lblTexRun);
@@ -119,6 +126,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
 
         lblQLNV.setFont(new java.awt.Font("Times New Roman", 1, 36)); // NOI18N
         lblQLNV.setForeground(new java.awt.Color(255, 51, 51));
+        lblQLNV.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         lblQLNV.setText("QUẢN LÝ NHÂN VIÊN");
 
         lblMANV.setFont(new java.awt.Font("Arial", 1, 11)); // NOI18N
@@ -217,10 +225,10 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
 
         lblTime.setFont(new java.awt.Font("Arial", 1, 18)); // NOI18N
         lblTime.setForeground(new java.awt.Color(255, 0, 0));
-        lblTime.setText("10:10 PM");
+        lblTime.setText("10:10:10");
 
         cbbLanguge.setBackground(new java.awt.Color(204, 255, 204));
-        cbbLanguge.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiếng Việt", "English" }));
+        cbbLanguge.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Tiếng Việt", "English", "日本語" }));
         cbbLanguge.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 cbbLangugeActionPerformed(evt);
@@ -480,7 +488,8 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
     }// </editor-fold>//GEN-END:initComponents
 
     private void cbbLangugeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbbLangugeActionPerformed
-        language();
+
+        this.lg.language();
     }//GEN-LAST:event_cbbLangugeActionPerformed
 
     private void btnNewActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNewActionPerformed
@@ -569,7 +578,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
     }
 
     private void fillTable() {
-        DefaultTableModel dtm = (DefaultTableModel) this.tblQLNV.getModel();
+        
 
         dtm.setRowCount(0);
 
@@ -586,6 +595,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
             };
 
             dtm.addRow(rowData);
+            
         }
     }
 
@@ -749,80 +759,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
         fillForm(list.getCurrentEmployeeIndex());
     }
 
-    public void language() {
-        int index = this.cbbLanguge.getSelectedIndex();
-
-        switch (index) {
-            case 0:
-                this.lblQLNV.setText("QUẢN LÝ NHÂN VIÊN");
-                this.lblMANV.setText("MÃ NHÂN VIÊN");
-                this.lblHoTen.setText("HỌ VÀ TÊN");
-                this.lblEmail.setText("EMAIL");
-                this.lblLuong.setText("LƯƠNG");
-                this.lblTuoi.setText("TUỔI");
-                this.lblLanguge.setText("Ngôn Ngữ:");
-                tblQLNV.setModel(new javax.swing.table.DefaultTableModel(
-                        new Object[][]{},
-                        new String[]{
-                            "Mã", "Họ Tên", "Tuổi", "Email", "Lương"
-                        }
-                ) {
-                    Class[] types = new Class[]{
-                        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-                    };
-                    boolean[] canEdit = new boolean[]{
-                        false, false, true, false, true
-                    };
-
-                    @Override
-                    public Class getColumnClass(int columnIndex) {
-                        return types[columnIndex];
-                    }
-
-                    @Override
-                    public boolean isCellEditable(int rowIndex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                });
-
-                break;
-
-            case 1:
-                this.lblQLNV.setText("STAFF MANAGEMENT");
-                this.lblMANV.setText("STAFF ID");
-                this.lblHoTen.setText("FULLNAME");
-                this.lblEmail.setText("EMAIL");
-                this.lblLuong.setText("SALARY");
-                this.lblTuoi.setText("AGE");
-                this.lblLanguge.setText("Language:");
-                tblQLNV.setModel(new javax.swing.table.DefaultTableModel(
-                        new Object[][]{},
-                        new String[]{
-                            "ID", "Fullname", "Age", "Email", "Salary"
-                        }
-                ) {
-                    Class[] types = new Class[]{
-                        java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class, java.lang.String.class
-                    };
-                    boolean[] canEdit = new boolean[]{
-                        false, false, true, false, true
-                    };
-
-                    @Override
-                    public Class getColumnClass(int columnIndex) {
-                        return types[columnIndex];
-                    }
-
-                    @Override
-                    public boolean isCellEditable(int rowIndex, int columnIndex) {
-                        return canEdit[columnIndex];
-                    }
-                });
-                break;
-
-        }
-        fillTable();
-    }
+  
 
     public void clearForm() {
         this.txtEmail.setText("");
@@ -844,6 +781,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
         this.txtHoTen.setBackground(Color.white);
         this.list.setCurrentIndex(-1);
         fillTable();
+        this.lblRecord.setText("Record: " + (0) + " of " + this.list.getList().size());
     }
 
     public boolean checkForm() {
@@ -933,7 +871,7 @@ public class EmployeeManagement_form extends javax.swing.JFrame implements Runna
             this.lblErrorEmail.setText("");
             this.txtEmail.setBackground(Color.white);
         }
-        Pattern p = Pattern.compile("\\w+@\\w+\\.\\w+");
+        Pattern p = Pattern.compile("\\w+@\\w+\\.\\w+\\.\\w");
         Matcher m = p.matcher(email);
 
         if (!m.find()) {
